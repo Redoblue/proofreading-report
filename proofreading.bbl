@@ -1,0 +1,103 @@
+\begin{thebibliography}{10}
+
+\bibitem{deorowicz2005correcting}
+S.~Deorowicz and M.~G. Ciura, ``Correcting spelling errors by modelling their
+  causes,'' {\em International journal of applied mathematics and computer
+  science}, vol.~15, no.~2, p.~275, 2005.
+
+\bibitem{damerau1989examination}
+F.~J. Damerau and E.~Mays, ``An examination of undetected typing errors,'' {\em
+  Information Processing \& Management}, vol.~25, no.~6, pp.~659--664, 1989.
+
+\bibitem{damerau1990evaluating}
+F.~J. Damerau, ``Evaluating computer-generated domain-oriented vocabularies,''
+  {\em Information processing \& management}, vol.~26, no.~6, pp.~791--801,
+  1990.
+
+\bibitem{peterson1986note}
+J.~L. Peterson, ``A note on undetected typing errors,'' {\em Communications of
+  the ACM}, vol.~29, no.~7, pp.~633--637, 1986.
+
+\bibitem{knuthart}
+D.~E. Knuth, ``The art of computer programming, vol. 3: Sorting and searching,"
+  1973,'' {\em This book describes the binary search on}, pp.~409--426.
+
+\bibitem{czech1997perfect}
+Z.~J. Czech, G.~Havas, and B.~S. Majewski, ``Perfect hashing,'' {\em
+  Theoretical Computer Science}, vol.~182, no.~1-2, pp.~1--143, 1997.
+
+\bibitem{maly1976compressed}
+K.~Maly, ``Compressed tries,'' {\em Communications of the ACM}, vol.~19, no.~7,
+  pp.~409--415, 1976.
+
+\bibitem{morrison1968patricia}
+D.~R. Morrison, ``Patricia—practical algorithm to retrieve information coded
+  in alphanumeric,'' {\em Journal of the ACM (JACM)}, vol.~15, no.~4,
+  pp.~514--534, 1968.
+
+\bibitem{darragh1993bonsai}
+J.~J. Darragh, J.~G. Cleary, and I.~H. Witten, ``Bonsai: a compact
+  representation of trees,'' {\em Software: Practice and Experience}, vol.~23,
+  no.~3, pp.~277--291, 1993.
+
+\bibitem{gorin19712003}
+R.~Gorin, P.~Willisson, W.~Buehring, and G.~Kuenning, ``2003. international
+  ispell,'' 1971.
+
+\bibitem{atkinson2011gnu}
+K.~Atkinson, ``Gnu aspell. 2003,'' {\em URL http://aspell. net}, 2011.
+
+\bibitem{damerau1964technique}
+F.~J. Damerau, ``A technique for computer detection and correction of spelling
+  errors,'' {\em Communications of the ACM}, vol.~7, no.~3, pp.~171--176, 1964.
+
+\bibitem{wagner1974string}
+R.~A. Wagner and M.~J. Fischer, ``The string-to-string correction problem,''
+  {\em Journal of the ACM (JACM)}, vol.~21, no.~1, pp.~168--173, 1974.
+
+\bibitem{levenshtein1966binary}
+V.~I. Levenshtein, ``Binary codes capable of correcting deletions, insertions,
+  and reversals,'' in {\em Soviet physics doklady}, vol.~10, pp.~707--710,
+  1966.
+
+\bibitem{baeza1998fast}
+R.~Baeza-Yates and G.~Navarro, ``Fast approximate string matching in a
+  dictionary,'' in {\em String Processing and Information Retrieval: A South
+  American Symposium, 1998. Proceedings}, pp.~14--22, IEEE, 1998.
+
+\bibitem{odell1918soundex}
+M.~Odell and R.~Russell, ``The soundex coding system,'' {\em US Patents},
+  vol.~1261167, 1918.
+
+\bibitem{pollock1984system}
+J.~J. Pollock and A.~Zamora, ``System design for detection and correction of
+  spelling errors in scientific and scholarly text,'' {\em Journal of the
+  American Society for Information Science (pre-1986)}, vol.~35, no.~2, p.~104,
+  1984.
+
+\bibitem{yannakoudakis1983intelligent}
+E.~J. Yannakoudakis and D.~Fawthrop, ``An intelligent spelling error
+  corrector,'' {\em Information Processing \& Management}, vol.~19, no.~2,
+  pp.~101--108, 1983.
+
+\bibitem{yannakoudakis1983rules}
+E.~J. Yannakoudakis and D.~Fawthrop, ``The rules of spelling errors,'' {\em
+  Information Processing \& Management}, vol.~19, no.~2, pp.~87--99, 1983.
+
+\bibitem{church1991probability}
+K.~W. Church and W.~A. Gale, ``Probability scoring for spelling correction,''
+  {\em Statistics and Computing}, vol.~1, no.~2, pp.~93--103, 1991.
+
+\bibitem{gadd1990phonix}
+T.~Gadd, ``Phonix: The algorithm,'' {\em Program}, vol.~24, no.~4,
+  pp.~363--366, 1990.
+
+\bibitem{philips1990hanging}
+L.~Philips, ``Hanging on the metaphone,'' {\em Computer Language}, vol.~7,
+  no.~12 (December), 1990.
+
+\bibitem{philips2000double}
+L.~Philips, ``The double metaphone search algorithm,'' {\em C/C++ users
+  journal}, vol.~18, no.~6, pp.~38--43, 2000.
+
+\end{thebibliography}
