@@ -100,4 +100,8 @@ L.~Philips, ``Hanging on the metaphone,'' {\em Computer Language}, vol.~7,
 L.~Philips, ``The double metaphone search algorithm,'' {\em C/C++ users
   journal}, vol.~18, no.~6, pp.~38--43, 2000.
 
+\bibitem{holyer1981np}
+I.~Holyer, ``The np-completeness of edge-coloring,'' {\em SIAM Journal on
+  computing}, vol.~10, no.~4, pp.~718--720, 1981.
+
 \end{thebibliography}
