@@ -4,6 +4,7 @@
 \usepackage{pythonhighlight}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usepackage{url}
 %\usepackage{minted}
 \usetikzlibrary{shapes.geometric, arrows}
 \usepackage{listings}
@@ -35,7 +36,7 @@
 
 \section{项目目标}
 \label{target}
-目前在自然语言处理研究中，拼写检查和纠错方面的研究已经进行了很长一段时间，有了很多成果和基础，也有了不少开源的拼写检查与纠错的成熟系统，主要以GNU Aspell和Hunspell为代表。我们小组在阅读相关文献和实践的基础上，将动手实现一个简单的类GNU Aspell系统，由于在\ref{intro}中所解释的原因，我们将只实现上个一下文无关的单词检错和改错系统。拼写错误改错意味着要对文本中出现的错误单词提供可能的正确单词建议，一般是一个概率递减的建议列表，但在自动改错时，我们只选择概率最大的一个单词替换错拼单词即可。
+目前在自然语言处理研究中，拼写检查和纠错方面的研究已经进行了很长一段时间，有了很多成果和基础，也有了不少开源的拼写检查与纠错的成熟系统，主要以GNU Aspell和Hunspell为代表。我们小组在阅读相关文献和实践的基础上，将动手实现一个简单的类GNU Aspell\cite{atkinson2011gnu}系统，由于在\ref{intro}中所解释的原因，我们将只实现上个一下文无关的单词检错和改错系统。拼写错误改错意味着要对文本中出现的错误单词提供可能的正确单词建议，一般是一个概率递减的建议列表，但在自动改错时，我们只选择概率最大的一个单词替换错拼单词即可。为了方便表述，我们将这个简单的拼写纠错器称为Bspell。
 
 \section{国内外相关工作}
 \label{related}
@@ -82,7 +83,7 @@
     \node (p_correct) [process, below of=d_detect, yshift=-1cm] {\textbf{纠错系统}};
     \node (o_writeback) [io, below of=p_correct] {写回文件};
     \node (stop) [startstop, below of=o_writeback] {停止};
-     
+     
     %连接具体形状
     \draw [arrow](start)    --  (i_text);
     \draw [arrow](i_text)   --  (d_ok);
@@ -207,7 +208,7 @@
 
   中间的单元都是由相邻的三个单元变换而来，我们的最后得分为4。这个得分本身有三个来源（即它的上方，左方，和左上方），我们可以通过不断回溯的方法找到其对应的alignment，使得S变成T。为了得到更加准确的评分，我们可以回溯多次，然后取平均，这样可以得到一个比较常见的模式。
 
-  主要的动态规划代码为：
+  Bspell系统主要的动态规划代码为：
 
   \begin{python}
     def match(self, s, t):
@@ -217,6 +218,7 @@
         :param t: string 2
         :return: score
         """
+        
         self.__init__(s, t)
 
         m = len(s) + 1
@@ -250,6 +252,7 @@
         find the most possible case
         :return: the most possible case
         """
+
         i, j = len(self.s), len(self.t)
         a = b = ''
 
@@ -302,7 +305,7 @@
 
 \begin{itemize}
     \item 使用概述： \\
-    我们的自动纠错系统使用python3代码写成，当安装完成相应的依赖包后就可以进行测试。代码运行时，获取指定的输入文件，该输入文件应该是包含单词拼写错误的英文文本，而且字符编码必须是\textit{UTF-8}格式。首先我们会将文本中的所有单词进行检测并保存到一一个列表中，通过检错和纠错算法循环地对每一个单词进行处理，完成所有单词的处理之后，将每个错误单词对应的建议单词写入到原文本中相应错误单词的后面（用括号分隔表示，同时在错误单词前面用\#号标记）。由于python是解释性语言，整个过程对于较大的文本可能会有一点儿延时。
+    我们的自动纠错系统BLDSC使用python3代码写成，当安装完成相应的依赖包后就可以进行测试。代码运行时，获取指定的输入文件，该输入文件应该是包含单词拼写错误的英文文本，而且字符编码必须是\textit{UTF-8}格式。首先我们会将文本中的所有单词进行检测并保存到一一个列表中，通过检错和纠错算法循环地对每一个单词进行处理，完成所有单词的处理之后，将每个错误单词对应的建议单词写入到原文本中相应错误单词的后面（用括号分隔表示，同时在错误单词前面用\#号标记）。由于python是解释性语言，整个过程对于较大的文本可能会有一点儿延时。
   \item 环境要求： \\
   \textbf{python3}编程环境，包含\textbf{optparser}和\textbf{numpy}包。
   \item 运行方法： \\
@@ -325,9 +328,65 @@
   \quad \textbf{python main.py -i in\_file -o out\_file -n 2}
 \end{itemize}
 
-\section{结果分析}
+\section{系统评测}
 
+GNU Aspell\cite{atkinson2011gnu}是一个免费开源的拼写检查器，它的设计初衷是为了取代已经过时的Ispell\cite{gorin19712003}，和我们所设计的简单的Bspell系统一样，它的功能也是为英文文本提供拼写检查和可能的正确单词建议。GNU Aspell的设计者为这个系统设计了一个非常合理的性能检测方法，并与之前所出现的一些主要的拼写检查器进行了比较，在此，我们将沿用这个方法，并使用同样的测试数据，以便对我们所完成的系统进行真实合理的评测，并在和主流系统的对比中了解我们设计的框架的合理性。
 
+\subsection{测试数据}
+
+Aspell所用的测试数据包含546个错误拼写的单词以及它们相应的正确形式，每个错拼单词和正确单词在文件中占一行，因此文件一共包括546行，文件所在的网址为\url{http://aspell.net/test/cur/batch0.tab}。在测试的过程中，为了排除字典文件带来的性能误差，和Aspell一样，我们只对其正确形式在词典中可以找到的单词进行统计，这样所涉及的误拼单词的规模对Bspell来说是478，而对Aspell来说是493,我们假设这个很小的不同对评测结果没有本质上的影响。
+
+\subsection{评测标准}
+
+Aspell的评测项共有8个，分别是：
+
+\begin{itemize}
+\item Total (T)。Total是指测试集中误拼单词的正确形式在字典中能够查到的误拼单词集合或其大小，因为只有正确形式出现在字典中的单词，我们才有可能进行正确的预测；
+\item Rank1 (R1)。第一个建议预测正确的个数；
+\item Rank5 (R5)。前5个建议中预测正确的个数，以下Rank10,Rank25,Rank50类似；
+\item Total Found (TF)。Total中的误拼单词被正确预测的个数（Rank1-Rank50可以找到）；
+\item Total Not Found (TNF)。没有预测正确的单词个数；
+\item Score。定义为$\frac{Total Found}{Total} \times 100\%$。
+\end{itemize}
+
+\subsection{评测结果}
+
+我们按照上述写了一个简单的评测代码，对BSpell系统进行了评测，代码命名为\textit{test.py}，包含在项目目录中。评测得到的结果为
+
+%\begin{center}
+\begin{table}
+\centering
+    \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+    \hline
+		~				& Score & TNF	& TF	&R1	&R5 	&R10 &R25 &R50 \\
+		\hline
+		Aspell .31 / Normal     	&93.1	&34			&459		&59.6	&85.6	&90.1	&92.9	&93.1 \\
+		\hline
+		Aspell .33 / Normal		&91.7	&41			&452		&57.0	&80.9	&88.0	&91.1	&91.5 \\
+		\hline
+		Aspell 0.50 / Normal		&91.9	&40			&453		&57.2	&81.1	&88.4	&91.5	&91.7 \\
+		\hline
+		Aspell 0.60 / Normal		&89.0	&54			&439		&53.1	&79.7	&86.2	&88.4	&89.0 \\
+		\hline
+		Aspell 0.60 / Slow		&93.1	&34			&459		&53.3	&80.7	&89.0	&92.5	&93.1 \\
+		\hline
+		Aspell 0.60.6 / Normal		&89.7	&51			&442		&53.3	&80.1	&86.8	&89.0	&89.7 \\
+		\hline
+		Aspell 0.60.6 / Slow		&92.9	&35			&458		&53.3	&80.5	&88.8	&92.3	&92.9 \\
+		\hline
+		Hunspell 1.1.12			&81.7	&90			&403		&55.2	&78.1	&80.7	&81.7	&81.7 \\
+		\hline
+		Hunspell w/ Phonetic Lookup	&85.6	&71			&422		&56.0	&81.9	&85.2	&85.6	&85.6 \\
+		\hline
+		Ispell 3.1.20 w/ -S option	&54.8	&223			&270		&38.3	&51.9	&54.0	&54.8	&54.8 \\
+		\hline
+		Word 97				&72.2	&137			&356		&59.0	&70.8	&72.2	&72.2	&72.2 \\
+		\hline
+		\textbf{Bspell}	&	81.4 & 89 & 389 & 50.0 & 66.1 & 73.0 & 79.3 81.4 \\
+		\hline
+    \end{tabular}
+\end{table}
+%\end{center}
 
 \clearpage
 \bibliographystyle{ieeetr}
