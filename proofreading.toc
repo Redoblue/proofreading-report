@@ -15,3 +15,6 @@
 \contentsline {subsection}{\numberline {7.3}评测结果}{11}
 \contentsline {section}{\numberline {8}组员分工}{11}
 \contentsline {subsection}{\numberline {8.1}包利强}{11}
+\contentsline {subsection}{\numberline {8.2}雷雪林}{11}
+\contentsline {subsection}{\numberline {8.3}戴君义}{12}
+\contentsline {section}{\numberline {9}总结}{12}
