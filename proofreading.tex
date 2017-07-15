@@ -212,92 +212,92 @@
   Bspell系统主要的动态规划代码为：
 
   \begin{python}
-    def match(self, s, t):
-        """
-        match two strings and return the final score
-        :param s: string 1
-        :param t: string 2
-        :return: score
-        """
-        
-        self.__init__(s, t)
+def match(self, s, t):
+    """
+    match two strings and return the final score
+    :param s: string 1
+    :param t: string 2
+    :return: score
+    """
+       
+    self.__init__(s, t)
 
-        m = len(s) + 1
-        n = len(t) + 1
+    m = len(s) + 1
+    n = len(t) + 1
 
-        for i in range(m):
-            self.opt[i, 0] = -3 * i
-        for j in range(n):
-            self.opt[0, j] = -3 * j
+    for i in range(m):
+        self.opt[i, 0] = -3 * i
+    for j in range(n):
+        self.opt[0, j] = -3 * j
 
-        for i in range(1, m):
-            for j in range(1, n):
-                if self.s[i - 1] == self.t[j - 1]:
-                    d = 1
-                else:
-                    d = -1
+    for i in range(1, m):
+        for j in range(1, n):
+            if self.s[i - 1] == self.t[j - 1]:
+                d = 1
+            else:
+                d = -1
 
-                self.opt[i, j] = max(
-                    self.opt[i - 1, j - 1] + d,
-                    self.opt[i - 1, j] - 3,
-                    self.opt[i, j - 1] - 3)
+            self.opt[i, j] = max(
+                self.opt[i - 1, j - 1] + d,
+                self.opt[i - 1, j] - 3,
+                self.opt[i, j - 1] - 3)
 
-        return self.opt[m - 1, n - 1]
+    return self.opt[m - 1, n - 1]
   \end{python}
 
   用来对最长公共子串进行回溯的代码为：
 
   \begin{python}
-    def backtrack(self):
-        """
-        find the most possible case
-        :return: the most possible case
-        """
+def backtrack(self):
+    """
+    find the most possible case
+    :return: the most possible case
+    """
+    
+    i, j = len(self.s), len(self.t)
+    a = b = ''
 
-        i, j = len(self.s), len(self.t)
-        a = b = ''
-
-        while i != 0 or j != 0:
-            if i == 0:
+    while i != 0 or j != 0:
+        if i == 0:
+            j -= 1
+            a += '-'
+            b += self.t[j]
+        elif j == 0:
+            i -= 1
+            a += self.s[i]
+            b += '-'
+        else:
+            x, y, z = self.opt[i - 1, j - 1], self.opt[i - 1, j], self.opt[i, j - 1]
+            if x >= y and x >= z:
+                i -= 1
                 j -= 1
-                a += '-'
-                b += self.t[j]
-            elif j == 0:
+                ts = self.s[i]
+                tt = self.t[j]
+                if ts == tt:
+                    a += ts
+                    b += tt
+                else:
+                    a += '*'
+                    b += '*'
+            elif y > z:
                 i -= 1
                 a += self.s[i]
                 b += '-'
+            elif y < z:
+                j -= 1
+                a += '-'
+                b += self.t[j]
             else:
-                x, y, z = self.opt[i - 1, j - 1], self.opt[i - 1, j], self.opt[i, j - 1]
-                if x >= y and x >= z:
-                    i -= 1
-                    j -= 1
-                    ts = self.s[i]
-                    tt = self.t[j]
-                    if ts == tt:
-                        a += ts
-                        b += tt
-                    else:
-                        a += '*'
-                        b += '*'
-                elif y > z:
+                if i >= j:
                     i -= 1
                     a += self.s[i]
                     b += '-'
-                elif y < z:
+                else:
                     j -= 1
                     a += '-'
-                    b += self.t[j]
-                else:
-                    if i >= j:
-                        i -= 1
-                        a += self.s[i]
-                        b += '-'
-                    else:
-                        j -= 1
-                        a += '-'
-                        b += self.s[j]
+                    b += self.s[j]
 
-        return a[::-1], b[::-1]
+    return a[::-1], b[::-1]
   \end{python}
 
 \end{itemize}
@@ -307,6 +307,45 @@
 \begin{itemize}
 \item 建议序列二次排序。\\
 经过Needleman-Wunsch算法对词典中的与错拼单词长度接近的单词进行动态规划匹配后，会产生一个排序列表，这个列表中的前几名可能与错拼单词都拥有相同长度的最长公共子串，如果直接将这个列表进行返回，效果会比较差，比如有的单词错拼字母位置靠前，而有的靠后，而人类打字的时候一般对单词的前面部分比较确定。我们对这个列表中具有相同分数的子列表进行二次排序，使得错拼位置靠后的单词排序靠前，这样会比较符合实际情况。
+
+\begin{python}
+# sort by score
+result_list = sorted(result_dict.items(), key=lambda x: x[1], reverse=True)
+result_list = result_list[:50]
+
+# Sort again
+optimal = []
+len_opt = 0
+for i in range(len(result_list)):
+    if result_list[i][1] != result_list[0][1]:
+        break
+    optimal.append([result_list[i][0], 0])
+    len_opt += 1
+
+# sort the optimal by likelihood
+for i in range(len(optimal)):
+    optimal[i][1] = self.cmp(word, optimal[i][0])
+optimal.sort(key=lambda x: x[1], reverse=True)
+
+# the final list
+final = [x[0] for x in optimal]
+resdue = [x[0] for x in result_list[len_opt:]]
+final.extend(resdue)
+\end{python}
+
+\item 部分词典比对。\\
+词典中的单词数量一般非常多，如果直接将每一个单词都拿来与错拼单词进行最长公共子串的求解，则非常耗时，而且也没有必要，因为我们在打字的过程中很难将一个单词错打为一个比它短得多的序列，或者是比它长得多的单词，因此这个技巧是有一定道理的。在这里我们使用了一个非常简单的加速技巧，就是只将长度和错拼单词相差为$N$的单词作匹配，在代码的具体实现中，我们取$N=2$。
+
+\begin{python}
+nw = NWMatcher()
+result_dict = {}
+
+for item in self.dict:
+    if not m - 2 < len(item) < m + 2:
+        continue
+    result_dict[item] = nw.match(word, item)
+\end{python}
+
 \end{itemize}
 
 \section{代码运行简述}
@@ -319,15 +358,15 @@
   \item 运行方法： \\
   进入主目录，运行 \\
   \quad \textbf{python main.py} \\
-  仅仅通过上述方法调用将默认纠错建议词数为1，同时将使用主目录下的\textit{test.txt}文件作为输入，而纠错的结果将自动输出到\textit{result.txt}文件中。为了可以自由地定义输入和输出文件，并指定纠错建议的个数，可以通过除加命令行参数的方法进行调用，参数介绍为： \\
+  仅仅通过上述方法调用将默认纠错建议词数为1，同时将使用主目录下的\textit{input.txt}文件作为输入，而纠错的结果将自动输出到\textit{output.txt}文件中。为了可以自由地定义输入和输出文件，并指定纠错建议的个数，可以通过除加命令行参数的方法进行调用，参数介绍为： \\
   \quad \textbf{python main.py -help}
 
   \begin{tabular}{|l|l|l|l|}
     \hline
     % after \\: \hline or \cline{col1-col2} \cline{col3-col4} ...
     缩写 & 全写 & 默认 & 简介 \\
-    -i & --input & test.txt & 指定输入文件 \\
-    -o & --output & result.txt & 指定输出文件 \\
+    -i & --input & input.txt & 指定输入文件 \\
+    -o & --output & output.txt & 指定输出文件 \\
     -n & --num\_advice & 1 & 建议词的数量  \\
     \hline
   \end{tabular}
